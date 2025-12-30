@@ -7,7 +7,7 @@ export default () => ({
     documentBucket: process.env.AWS_DOCUMENT_BUCKET!,
   },
   pinecone: {
-    pineconeApiKey: process.env.PINECONE_API_KEY!,
-    pineconeIndexName: process.env.PINECONE_INDEX_NAME!,
+    apiKey: process.env.PINECONE_API_KEY!,
+    index: process.env.PINECONE_INDEX_NAME!,
   },
 });
