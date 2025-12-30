@@ -10,4 +10,9 @@ export default () => ({
     apiKey: process.env.PINECONE_API_KEY!,
     index: process.env.PINECONE_INDEX_NAME!,
   },
+
+  openAi: {
+    apiKey: process.env.OPENAI_API_KEY!,
+    model: process.env.OPENAI_MODEL!,
+  },
 });

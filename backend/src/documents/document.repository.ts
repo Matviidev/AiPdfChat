@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { PutCommand } from '@aws-sdk/lib-dynamodb';
+import { GetCommand, PutCommand } from '@aws-sdk/lib-dynamodb';
 import { DynamoDbService } from 'src/providers/dynamodb.service';
 import { DocumentStatus } from './enum/documentStatus.enum';
 import { DocumentItem } from './interface/document.interface';
@@ -29,5 +29,16 @@ export class DocumentRepository {
     );
 
     return document;
+  }
+
+  async findById(id: string): Promise<DocumentItem | null> {
+    const result = await this.dynamoDbService.send(
+      new GetCommand({
+        TableName: this.dynamoDbService.tableName,
+        Key: { id },
+      }),
+    );
+
+    return (result.Item as DocumentItem) ?? null;
   }
 }

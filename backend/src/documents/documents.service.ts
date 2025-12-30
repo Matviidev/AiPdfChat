@@ -14,4 +14,8 @@ export class DocumentsService {
     const url = await this.documentS3Repository.getUploadUrl(document.id);
     return { url, document };
   }
+
+  async getDocument(id: string) {
+    return await this.documentRepository.findById(id);
+  }
 }

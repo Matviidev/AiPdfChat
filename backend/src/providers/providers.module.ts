@@ -1,7 +1,6 @@
 import { Module } from '@nestjs/common';
 import { DynamoDbService } from './dynamodb.service';
 import { S3Service } from './s3.service';
-import { Pinecone } from '@pinecone-database/pinecone';
 import { PineconeService } from './pinecone.service';
 
 @Module({
