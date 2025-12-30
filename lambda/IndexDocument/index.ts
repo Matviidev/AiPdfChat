@@ -38,13 +38,9 @@ export const handler = async (event: any) => {
   let docId: string | undefined;
 
   try {
-    const payload = event.body || event;
-    const { key, text } = payload;
+    const { docId, text } = event;
 
-    if (key) docId = key;
-
-    // 2. Validation Checks
-    if (!text || !key) {
+    if (!text || !docId) {
       console.warn('Missing text or key. Returning failed status.');
       return {
         status: 'failed',
@@ -58,21 +54,17 @@ export const handler = async (event: any) => {
 
     if (textChunks.length === 0) {
       return {
-        status: 'skipped',
+        status: 'failed',
         reason: 'Text was empty',
-        docId: key,
+        docId,
       };
     }
 
-    // 4. Prepare Records
     const records = textChunks.map((chunk, i) => ({
-      id: generateId(key, i),
-      values: [],
-      metadata: {
-        chunk_text: chunk,
-        source_key: key,
-        chunk_index: i,
-      },
+      id: generateId(docId, i),
+      chunk_text: chunk,
+      source_key: docId,
+      chunk_index: i,
     }));
 
     const index = pc.index(INDEX_NAME);
@@ -80,7 +72,7 @@ export const handler = async (event: any) => {
 
     for (let i = 0; i < records.length; i += BATCH_SIZE) {
       const batch = records.slice(i, i + BATCH_SIZE);
-      await index.upsert(batch as any);
+      await index.upsertRecords(batch);
       console.log(
         `Upserted batch ${i / BATCH_SIZE + 1} (${batch.length} records)`,
       );
@@ -88,7 +80,7 @@ export const handler = async (event: any) => {
 
     return {
       status: 'success',
-      docId: key,
+      docId: docId,
       chunksProcessed: records.length,
       message: 'Indexing complete',
     };
