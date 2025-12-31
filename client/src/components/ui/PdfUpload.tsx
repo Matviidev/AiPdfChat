@@ -1,8 +1,9 @@
-import { Button } from "@/components/ui/button";
-import useGetFileStatus, { DocumentStatus } from "@/hooks/use-get-file-status";
-import { File, Loader2, Upload, CircleX } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
-import { toast } from "sonner";
+import { Button } from '@/components/ui/button';
+import useGetFileStatus from '@/hooks/useGetDocument';
+import type { DocumentStatus } from '@/hooks/useGetPresignedUrl';
+import { File, Loader2, Upload, CircleX } from 'lucide-react';
+import { useEffect, useRef, useState } from 'react';
+import { toast } from 'sonner';
 
 interface PdfUploadProps {
   onFileSelect: (file: File | null) => void;
@@ -29,13 +30,13 @@ const PdfUpload = ({
     const file = event.target.files?.[0];
     if (!file) return;
 
-    if (file.type !== "application/pdf") {
-      toast.warning("Only PDF files are supported");
+    if (file.type !== 'application/pdf') {
+      toast.warning('Only PDF files are supported');
       return;
     }
 
     if (file.size > 10 * 1024 * 1024) {
-      toast.warning("File exceeds 10MB limit");
+      toast.warning('File exceeds 10MB limit');
       return;
     }
 
@@ -45,10 +46,10 @@ const PdfUpload = ({
   const handleRemoveFile = () => {
     onFileSelect(null);
     if (fileInputRef.current) {
-      fileInputRef.current.value = "";
+      fileInputRef.current.value = '';
     }
     clearMessages();
-      toast.success("Document removed");
+    toast.success('Document removed');
   };
 
   const triggerFileInput = () => {
@@ -61,7 +62,7 @@ const PdfUpload = ({
     onFileStatusChange(fileStatus);
     if (fileStatus === DocumentStatus.SUCCESS) {
       setIsFileUploaded(true);
-      toast.success("Upload complete! Ready to chat.");
+      toast.success('Upload complete! Ready to chat.');
     }
   }, [fileStatus]);
 
@@ -75,7 +76,7 @@ const PdfUpload = ({
           </span>
 
           {fileStatus === DocumentStatus.PENDING ||
-          typeof fileStatus === "undefined" ? (
+          typeof fileStatus === 'undefined' ? (
             <Loader2 className="w-4 h-4 ml-3 text-black animate-spin" />
           ) : (
             <Button

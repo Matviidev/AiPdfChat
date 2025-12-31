@@ -1,19 +1,18 @@
-import { Button } from "@/components/ui/button";
-import ChatMessage from "@/components/ui/ChatMessage";
-import { Input } from "@/components/ui/input";
-import PdfUpload from "@/components/ui/PdfUpload";
-import { DoorOpen, ArrowRight } from "lucide-react";
-import { useState } from "react";
-import { useNavigate } from "react-router";
-import useGetPresignedUrl from "@/hooks/use-get-presigned-url";
-import useUploadToS3 from "@/hooks/use-upload-to-s3";
-import { toast } from "sonner";
-import { DocumentStatus } from "@/hooks/use-get-file-status";
-import useGetAiResponse from "@/hooks/use-get-ai-response";
+import { Button } from '@/components/ui/button';
+import ChatMessage from '@/components/ui/ChatMessage';
+import { Input } from '@/components/ui/input';
+import PdfUpload from '@/components/ui/PdfUpload';
+import useGetAiResponse from '@/hooks/useGetAiAnswer';
+import useGetPresignedUrl, { DocumentStatus } from '@/hooks/useGetPresignedUrl';
+import useUploadToS3 from '@/hooks/useUploadToS3';
+import { DoorOpen, ArrowRight } from 'lucide-react';
+import { useState } from 'react';
+import { useNavigate } from 'react-router';
+import { toast } from 'sonner';
 
 export interface Message {
   id: number;
-  role: "user" | "ai";
+  role: 'user' | 'ai';
   content: string;
 }
 
@@ -36,7 +35,7 @@ const Chat = () => {
     });
     console.log(url);
     if (!url) {
-      toast.error("Upload failed. Please retry.");
+      toast.error('Upload failed. Please retry.');
       return;
     }
 
@@ -49,13 +48,13 @@ const Chat = () => {
   const [messages, setMessages] = useState<Message[]>([
     // { id: 1, role: "ai", content: "Hello! Upload a PDF to get started." },
   ]);
-  const [input, setInput] = useState("");
-  const userEmail = localStorage.getItem("userEmail") || "";
+  const [input, setInput] = useState('');
+  const userEmail = localStorage.getItem('userEmail') || '';
 
   const handleLogout = () => {
-    localStorage.removeItem("userEmail");
-    localStorage.removeItem("fileKey");
-    navigate("/");
+    localStorage.removeItem('userEmail');
+    localStorage.removeItem('fileKey');
+    navigate('/');
   };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -70,11 +69,11 @@ const Chat = () => {
 
     const userMessage: Message = {
       id: Date.now(),
-      role: "user",
+      role: 'user',
       content: input,
     };
     setMessages((prev) => [...prev, userMessage]);
-    setInput("");
+    setInput('');
 
     const response = await getAiResponseMutation.mutateAsync(input);
     const aiResponse = response.data.answer;
@@ -83,7 +82,7 @@ const Chat = () => {
       ...prev,
       {
         id: Date.now() + 1,
-        role: "ai",
+        role: 'ai',
         content: aiResponse,
       },
     ]);
@@ -96,8 +95,7 @@ const Chat = () => {
       {/* Header */}
       <header className="border bg-white/80 backdrop-blur-sm sticky top-0 z-10 w-full shadow-[0_6px_16px_-8px_rgba(0,0,0,0.10)] shadow-b">
         <div className="w-full px-4 py-3 flex items-center justify-between">
-          <div className="flex items-center gap-1.5 flex-1">
-          </div>
+          <div className="flex items-center gap-1.5 flex-1"></div>
           <div className="flex-1 flex justify-center">
             {pdfFile && (
               <span className="text-sm font-medium text-black truncate max-w-md">
@@ -106,9 +104,7 @@ const Chat = () => {
             )}
           </div>
           <div className="flex items-center gap-3 flex-1 justify-end">
-            <span className="text-sm text-black">
-              {userEmail}
-            </span>
+            <span className="text-sm text-black">{userEmail}</span>
             <Button
               variant="outline"
               size="sm"
@@ -175,16 +171,14 @@ const Chat = () => {
                     <div className="w-2 h-2 bg-black rounded-full animate-bounce"></div>
                     <div
                       className="w-2 h-2 bg-black rounded-full animate-bounce"
-                      style={{ animationDelay: "0.1s" }}
+                      style={{ animationDelay: '0.1s' }}
                     ></div>
                     <div
                       className="w-2 h-2 bg-black rounded-full animate-bounce"
-                      style={{ animationDelay: "0.2s" }}
+                      style={{ animationDelay: '0.2s' }}
                     ></div>
                   </div>
-                  <span className="text-sm text-black">
-                    Processing...
-                  </span>
+                  <span className="text-sm text-black">Processing...</span>
                 </div>
               </div>
             </div>
