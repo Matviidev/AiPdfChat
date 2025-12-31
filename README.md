@@ -56,7 +56,7 @@ This project implements a document processing pipeline:
 ### 1. Clone the Repository
 
 ```bash
-git clone <repository-url>
+git clone https://github.com/Matviidev/AiPdfChat
 cd aws-practice-3
 ```
 
