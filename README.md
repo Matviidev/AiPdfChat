@@ -1,4 +1,4 @@
-# AWS Practice 3 - Document Processing & AI Chat System
+# Document Processing & AI Chat System
 
 A document processing system built with NestJS that enables users to upload PDF documents to S3, processes them using AWS Lambda functions, indexes them in Pinecone, and provides an AI-powered chat interface to query document content.
 
